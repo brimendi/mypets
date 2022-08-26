@@ -10,7 +10,7 @@ bcrypt = Bcrypt(app)
 @app.route('/mypets/reminders')
 def reminders():
     if not "user_id" in session:
-        return redirect('/login_and_registration')
+        return redirect('/')
     user = Users.get_by_id({'id': session['user_id']})
     all_reminders = Reminders.get_all()
     return render_template("reminders.html", all_reminders = all_reminders, user = user)
@@ -18,7 +18,7 @@ def reminders():
 @app.route('/mypets/reminders/add')
 def add_reminder():
     if not "user_id" in session:
-        return redirect('/login_and_registration')
+        return redirect('/')
     user = Users.get_by_id({'id': session['user_id']})
     data = {
         'id': id
@@ -29,7 +29,7 @@ def add_reminder():
 @app.route('/mypets/reminders/create', methods=['POST'])
 def create_reminder():
     if not "user_id" in session:
-        return redirect('/login_and_registration')
+        return redirect('/')
     if not Reminders.validator(request.form):
         return redirect('/mypets/reminders/add')
     data = {

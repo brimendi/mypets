@@ -20,13 +20,13 @@ def allowed_file(filename):
 @app.route('/mypets/add')
 def add_pet():
     if not "user_id" in session:
-        return redirect('/login_and_registration')
+        return redirect('/')
     return render_template("add_pet.html")
     
 @app.route('/mypets/create',methods=['POST'])
 def create_pet():
     if not "user_id" in session:
-        return redirect('/login_and_registration')
+        return redirect('/')
     if not Pets.validator(request.form):
         return redirect('/mypets/add')
     file = request.files['file']
@@ -46,7 +46,7 @@ def create_pet():
 @app.route('/mypets/view_one/<int:id>')
 def view_one(id):
     if not "user_id" in session:
-        return redirect('/login_and_registration')
+        return redirect('/')
     data = {
         'id': id
     }
@@ -60,7 +60,7 @@ def view_one(id):
 @app.route('/mypets/edit/<int:id>')
 def edit_pet(id):
     if not "user_id" in session:
-        return redirect ('/login_and_registration')
+        return redirect ('/')
     pet = Pets.get_by_id({'id': id})
     # file = request.files['file']
     # if file:
@@ -72,7 +72,7 @@ def edit_pet(id):
 @app.route('/mypets/update/<int:id>', methods=['POST'])
 def update_pet(id):
     if not "user_id" in session:
-        return redirect('/login_and_registration')
+        return redirect('/')
     if not Pets.validator(request.form):
         return redirect(f'/mypets/edit/{id}')
     data = {
@@ -85,7 +85,7 @@ def update_pet(id):
 @app.route('/mypets/budget')
 def budget():
     if not "user_id" in session:
-        return redirect('/login_and_registration')
+        return redirect('/')
     return redirect('/mypets/budget')
 
 @app.route('/mypets/create', methods=['POST'])
@@ -113,7 +113,7 @@ def display_image(filename):
 @app.route('/mypets/delete/<int:id>')
 def delete_pet(id):
     if not "user_id" in session:
-        return redirect('/login_and_registration')
+        return redirect('/')
     data = {
         'id':id
     }

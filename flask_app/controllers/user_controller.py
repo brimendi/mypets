@@ -7,7 +7,7 @@ from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 
 # MAIN PAGE ** if user didnt log out it'll still take you to dashboard logged in page **
-@app.route('/login_and_registration')
+@app.route('/')
 def login_and_register_form():
     if "user_id" in session:
         return redirect('/mypets/home')
@@ -17,7 +17,7 @@ def login_and_register_form():
 @app.route('/mypets/home')
 def homepage():
     if not "user_id" in session:
-        return redirect('/login_and_registration')
+        return redirect('/')
     user = Users.get_by_id({'id': session['user_id']})
     all_pets = Pets.get_all_by_user_id({'user_id': session['user_id']})
     return render_template("home.html", all_pets = all_pets, user = user)
@@ -27,7 +27,7 @@ def homepage():
 def register():
     # print(request.form)
     if not Users.validate(request.form):
-        return redirect('/login_and_registration')
+        return redirect('/')
     hashed_pw = bcrypt.generate_password_hash(request.form['password'])
     data = {
         **request.form,
@@ -41,7 +41,7 @@ def register():
 def logout():
     if "user_id" in session:
         del session['user_id']
-    return redirect('/login_and_registration')
+    return redirect('/')
 
 #Log in validations/ Fetching user info by email. Validating log in info is in db/ storing log in in session/ redirectng to dashboard
 @app.route('/users/login', methods=['POST'])
@@ -52,9 +52,9 @@ def login():
     user_from_db = Users.get_by_email(data)
     if not user_from_db:
         flash("Invalid credentials", "log")
-        return redirect('/login_and_registration')
+        return redirect('/')
     if not bcrypt.check_password_hash(user_from_db.password, request.form['password']):
         flash("Invalid credentials", "log")
-        return redirect('/login_and_registration')
+        return redirect('/')
     session['user_id'] = user_from_db.id
     return redirect('/mypets/home')
