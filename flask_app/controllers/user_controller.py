@@ -19,7 +19,7 @@ def homepage():
     if not "user_id" in session:
         return redirect('/login_and_registration')
     user = Users.get_by_id({'id': session['user_id']})
-    all_pets = Pets.get_all()
+    all_pets = Pets.get_all_by_user_id({'user_id': session['user_id']})
     return render_template("home.html", all_pets = all_pets, user = user)
 
 # Once registered directed to homepage/ validating register info/ hashing password/ storing new users info in database and session

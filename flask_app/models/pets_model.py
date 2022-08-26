@@ -59,6 +59,18 @@ class Pets:
         return this_pet
 
     @classmethod
+    def get_all_by_user_id(cls, data):
+        query = "SELECT * FROM pets WHERE user_id = %(user_id)s;"
+        results = connectToMySQL(DATABASE).query_db(query, data)
+        user_pets = []
+        if results: 
+            for row in results:
+                this_pet = cls(row)
+                user_pets.append(this_pet)
+        return user_pets
+
+
+    @classmethod
     def delete(cls, data):
         query = "DELETE FROM pets WHERE id = %(id)s"
         return connectToMySQL(DATABASE).query_db(query, data)
